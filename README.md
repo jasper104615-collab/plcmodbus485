@@ -274,15 +274,21 @@ cd ~/plcmodbus_ws && colcon build --packages-select xgb_plc_modbus
 source install/setup.bash
 ros2 run xgb_plc_modbus plc_node
 
-# M0~M3 전부 ON
+# M0~M3 전부 ON / OFF (일괄)
 ros2 topic pub --once /plc_m_all std_msgs/msg/Bool "{data: true}"
-
-# M0~M3 전부 OFF
 ros2 topic pub --once /plc_m_all std_msgs/msg/Bool "{data: false}"
+```
 
-# P000에 숫자 쓰기
-ros2 topic pub --once /plc_word_control std_msgs/msg/Int32 "{data: 500}"
+### 개별 비트 ON / OFF (M0 ~ M3)
 
+| 비트 | ON | OFF |
+| --- | --- | --- |
+| M0 | `ros2 topic pub --once /plc_m0 std_msgs/msg/Bool "{data: true}"` | `ros2 topic pub --once /plc_m0 std_msgs/msg/Bool "{data: false}"` |
+| M1 | `ros2 topic pub --once /plc_m1 std_msgs/msg/Bool "{data: true}"` | `ros2 topic pub --once /plc_m1 std_msgs/msg/Bool "{data: false}"` |
+| M2 | `ros2 topic pub --once /plc_m2 std_msgs/msg/Bool "{data: true}"` | `ros2 topic pub --once /plc_m2 std_msgs/msg/Bool "{data: false}"` |
+| M3 | `ros2 topic pub --once /plc_m3 std_msgs/msg/Bool "{data: true}"` | `ros2 topic pub --once /plc_m3 std_msgs/msg/Bool "{data: false}"` |
+
+```bash
 # 확인
 ros2 node list
 ros2 node info /xgb_ros2_modbus_node
