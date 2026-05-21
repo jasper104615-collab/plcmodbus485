@@ -8,6 +8,54 @@ LS **XBC-DR10E** PLC ↔ **ROS 2 Humble** Modbus RTU 브리지 패키지.
 
 ---
 
+## 새 컴퓨터 사전 설정 (클론 & 빌드 **전에** 필수)
+
+다른 PC에서 처음 셋업할 때, **코드 clone 전에** 아래 3가지만 하면 CH340 USB-RS485가 잡히고 권한 에러 없이 동작합니다.  
+(별도 Windows式 드라이버 수동 설치는 보통 필요 없습니다.)
+
+### ① `brltty` 제거 (가장 중요)
+
+Ubuntu에 점자 디스플레이용 `brltty`가 있으면 **CH340 인식을 가로채** `/dev/ttyUSB*` 가 안 보이거나 바로 사라질 수 있습니다.
+
+```bash
+sudo apt remove brltty
+```
+
+> **주의:** 제거 후 **USB 컨버터를 뺐다가 다시 꽂아야** 정상 인식됩니다.
+
+### ② 시리얼 포트 이름 확인
+
+PC·USB 포트마다 `ttyUSB0`이 아니라 `ttyUSB1` 등일 수 있습니다.
+
+```bash
+ls /dev/ttyUSB*
+```
+
+노드 기본값은 `/dev/ttyUSB0` 입니다. 번호가 다르면 `xgb_plc_modbus/plc_node.py` 의 `port=` 를 해당 이름으로 수정한 뒤 다시 `colcon build` 하세요.
+
+### ③ 포트 권한 (영구 권장)
+
+**영구 (권장)** — `dialout` 그룹에 사용자 추가. **로그아웃 후 재로그인** 또는 재부팅 필요.
+
+```bash
+sudo usermod -aG dialout $USER
+# 재로그인 후 확인
+ls -l /dev/ttyUSB0
+groups   # dialout 포함 여부
+```
+
+**당장만 테스트** — 임시로:
+
+```bash
+sudo chmod 666 /dev/ttyUSB0
+```
+
+> 재부팅·USB 재연결 후에는 `chmod` 를 다시 쳐야 할 수 있습니다.
+
+**요약:** 새 PC → ① `brltty` 제거 + USB 재연결 → ② `ls /dev/ttyUSB*` 확인 → ③ `dialout` 등록(또는 `chmod`) → 그다음 clone & 빌드.
+
+---
+
 ## 클론 & 빌드
 
 워크스페이스 이름은 다른 프로젝트 `ros2_ws` 와 겹치지 않게 **`plcmodbus_ws`** 를 씁니다.
@@ -37,13 +85,7 @@ pip3 install pymodbus pyserial
 pip3 uninstall serial -y   # pyserial 과 충돌하는 패키지 제거 (있을 때만)
 ```
 
-USB 권한:
-
-```bash
-sudo usermod -aG dialout $USER
-# 재로그인 후
-ls -l /dev/ttyUSB0
-```
+USB·`brltty`·포트 권한은 위 **「새 컴퓨터 사전 설정」** 절 참고.
 
 ---
 
