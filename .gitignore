@@ -1,0 +1,21 @@
+# ROS 2 colcon
+build/
+install/
+log/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+dist/
+
+# IDE / OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# pip 잘못된 serial 패키지 관련 (참고용 로컬만)
+.venv/
+venv/
