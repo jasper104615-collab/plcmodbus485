@@ -11,7 +11,7 @@ LS **XBC-DR10E** PLC ↔ **ROS 2 Humble** Modbus RTU 브리지 패키지.
 ```bash
 mkdir -p ~/ros2_ws/src
 cd ~/ros2_ws/src
-git clone <YOUR_REPO_URL> xgb_plc_modbus
+git clone https://github.com/jasper104615-collab/plcmodbus485.git xgb_plc_modbus
 
 cd ~/ros2_ws
 source /opt/ros/humble/setup.bash
