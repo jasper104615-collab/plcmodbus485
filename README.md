@@ -8,12 +8,14 @@ LS **XBC-DR10E** PLC ↔ **ROS 2 Humble** Modbus RTU 브리지 패키지.
 
 ## 클론 & 빌드
 
+워크스페이스 이름은 다른 프로젝트 `ros2_ws` 와 겹치지 않게 **`plcmodbus_ws`** 를 씁니다.
+
 ```bash
-mkdir -p ~/ros2_ws/src
-cd ~/ros2_ws/src
+mkdir -p ~/plcmodbus_ws/src
+cd ~/plcmodbus_ws/src
 git clone https://github.com/jasper104615-collab/plcmodbus485.git xgb_plc_modbus
 
-cd ~/ros2_ws
+cd ~/plcmodbus_ws
 source /opt/ros/humble/setup.bash
 colcon build --packages-select xgb_plc_modbus
 source install/setup.bash
